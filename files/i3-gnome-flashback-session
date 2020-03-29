@@ -4,4 +4,12 @@ if [ -z $XDG_CURRENT_DESKTOP ]; then
     export XDG_CURRENT_DESKTOP="GNOME-Flashback:GNOME"
 fi
 
-exec gnome-session --builtin --session=i3-gnome-flashback --disable-acceleration-check "$@"
+gnome-session --help 2>/dev/null | grep -- --builtin > /dev/null
+HASBUILTIN=$?
+if [ $HASBUILTIN -eq 0 ]; then
+    BUILTINARG="--builtin"
+else
+    BUILTINARG=""
+fi
+
+exec gnome-session $BUILTINARG --session=i3-gnome-flashback --disable-acceleration-check "$@"
